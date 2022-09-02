@@ -73,6 +73,42 @@ app.post('/houses', (req, res) => {
     }
 })
 
+app.delete('/houses/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const indexToDelete = houses.findIndex(house => house.id === id)
+
+    if (indexToDelete > -1) {
+        houses.splice(indexToDelete, 1)
+        res.send({message: 'House deleted successfully.😊'})
+    }else{
+        res.status(404).send({error: 'House not found. 😒'})
+    }
+
+})
+
+app.patch('/houses/:id', (req, res) => {
+    let id = Number(req.params.id)
+    let match = houses.find(house => house.id === id)
+
+    if(match){
+        if(req.body.address){
+            match.address = req.body.address
+        }
+
+        if(req.body.type){
+            match.type = req.body.type
+        }
+
+        if(req.body.residentId){
+            match.residentId = req.body.residentId
+        }
+
+        res.send({match})
+    } else {
+        res.status(404).send({error: "House not found! 😒"})
+    }
+})
+
 //Residents
 
 app.get('/residents', (req, res) => {
@@ -120,6 +156,42 @@ app.post('/residents', (req, res) => {
         res.send(newResident)
     } else{
         res.status(400).send({errors})
+    }
+})
+
+app.delete('/residents/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const indexToDelete = residents.findIndex(resident => resident.id === id)
+
+    if (indexToDelete > -1) {
+        residents.splice(indexToDelete, 1)
+        res.send({message: 'Resident deleted successfully.😊'})
+    }else{
+        res.status(404).send({error: 'Resident not found. 😒'})
+    }
+
+})
+
+app.patch('/residents/:id', (req, res) => {
+    let id = Number(req.params.id)
+    let match = residents.find(resident => resident.id === id)
+
+    if(match){
+        if(req.body.name){
+            match.name = req.body.name
+        }
+
+        if(req.body.age){
+            match.age = req.body.age
+        }
+
+        if(req.body.gender){
+            match.gender = req.body.gender
+        }
+
+        res.send({match})
+    } else {
+        res.status(404).send({error: "Resident not found! 😒"})
     }
 })
 
